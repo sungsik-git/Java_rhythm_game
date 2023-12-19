@@ -15,13 +15,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 public class DynamicBeat extends JFrame {
-
-  private Image introBackground;
   private JPanel img;
 
   private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menubar1280.jpg")));
   private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.jpeg")));
+  private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
   
+  // Get background image
+  Image originalImage = new ImageIcon(Main.class.getResource("../images/background(title).jpg")).getImage();
+  // Resizing to original image
+  private Image background = originalImage.getScaledInstance(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, Image.SCALE_SMOOTH);
 
   //mouse position 
   private int mouseX, mouseY;
@@ -53,10 +56,34 @@ public class DynamicBeat extends JFrame {
         int y = e.getYOnScreen();
         setLocation(x - mouseX, y - mouseY);
       }
-    });
+    }); 
     add(menuBar);
 
-    //Setting exitButton
+    //Setting start Button
+    startButton.setBounds(40, 600, 400, 100);
+    startButton.setBorderPainted(false);
+    startButton.setContentAreaFilled(false);
+    startButton.setFocusPainted(false);
+    startButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        super.mouseEntered(e);
+        startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      }
+      @Override
+      public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      }
+      @Override
+      public void mousePressed(MouseEvent e){
+        startButton.setVisible(false);
+        background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+      }
+    });
+    add(startButton);
+
+    //Setting exit Button
     exitButton.setBounds(1200, 50, 30, 30);
     exitButton.setBorderPainted(false);
     exitButton.setContentAreaFilled(false);
@@ -77,25 +104,18 @@ public class DynamicBeat extends JFrame {
         System.exit(0);
       }
     });
-    
     add(exitButton);
 
-    // Get background image
-    ImageIcon icon = new ImageIcon(Main.class.getResource("../images/background(title).jpg"));
-    Image originalImage = icon.getImage();
-    // Resizing to original image
-    introBackground = originalImage.getScaledInstance(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, Image.SCALE_SMOOTH);
-
     // IntroBGM play
-    Music introMusic = new Music("introBGM.mp3", true);
-    introMusic.start();
+    // Music introMusic = new Music("introBGM.mp3", true);
+    // introMusic.start();
 
     
     img = new JPanel() {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(introBackground, 0, 0, this);
+            g.drawImage(background, 0, 0, this);
         }
     };
     img.setLayout(null);
