@@ -13,25 +13,27 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 public class DynamicBeat extends JFrame {
   private JPanel img;
 
   private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menubar1280.jpg")));
-  private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.jpeg")));
+  private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png")));
   private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
   
   // Get background image
   private Image background = new ImageIcon(Main.class.getResource("../images/background(title).png")).getImage();
   //mouse position 
   private int mouseX, mouseY;
-
-  //Music select image
-  private Image selectedImage = new ImageIcon(Main.class.getResource("../images/game1_background.png")).getImage();
-
   private boolean isMainScreen = false;
 
-  private Image titlImage = new ImageIcon(Main.class.getResource("../images/title_img.png")).getImage();
+  //selected music infomation in main screen
+  ArrayList<Track> trackList = new ArrayList<Track>();
+  private Image selectedImage;
+  private Image titleImage;
+  private Music selectedMusic;
+  private int nowSelected = 0;
 
   public DynamicBeat() {
     setUndecorated(true);
@@ -40,8 +42,14 @@ public class DynamicBeat extends JFrame {
     setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
     setResizable(false);
     setLocationRelativeTo(null);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // IntroBGM play
+    Music introMusic = new Music("introBGM.mp3", true);
+    introMusic.start();
 
+    // Add Game Track
+    trackList.add(new Track("title_img.png", "game1_background.png", "game1_start_img.png", "game1_selected.mp3", "game1.mp3"));
+
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBackground(new Color(0,0,0,0));
     setLayout(null);
 
@@ -82,6 +90,8 @@ public class DynamicBeat extends JFrame {
       @Override
       public void mousePressed(MouseEvent e){
         startButton.setVisible(false);
+        introMusic.close();
+        selectTrack(0);
         background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
         isMainScreen = true;
       }
@@ -111,19 +121,16 @@ public class DynamicBeat extends JFrame {
     });
     add(exitButton);
 
-    // IntroBGM play
-    // Music introMusic = new Music("introBGM.mp3", true);
-    // introMusic.start();
+  
 
-    
   img = new JPanel() {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
         if (isMainScreen) {
-            g.drawImage(selectedImage, 340, 100, null);
-            g.drawImage(titlImage, 640, 570, null);
+            g.drawImage(selectedImage, 320, 120, null);
+            g.drawImage(titleImage, 700, 560, null);
         }
         
     }
@@ -133,6 +140,16 @@ public class DynamicBeat extends JFrame {
     add(img);
 
     setVisible(true);
+  }
+
+  public void selectTrack(int nowSelected){
+    if(selectedMusic != null){
+      selectedMusic.close();
+    }
+    titleImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getTitleImage())).getImage();
+    selectedImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getStartImage())).getImage();
+    selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(),true);
+    selectedMusic.start();
   }
 }
 
