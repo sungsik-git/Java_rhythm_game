@@ -22,12 +22,16 @@ public class DynamicBeat extends JFrame {
   private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
   
   // Get background image
-  Image originalImage = new ImageIcon(Main.class.getResource("../images/background(title).jpg")).getImage();
-  // Resizing to original image
-  private Image background = originalImage.getScaledInstance(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, Image.SCALE_SMOOTH);
-
+  private Image background = new ImageIcon(Main.class.getResource("../images/background(title).png")).getImage();
   //mouse position 
   private int mouseX, mouseY;
+
+  //Music select image
+  private Image selectedImage = new ImageIcon(Main.class.getResource("../images/game1_background.png")).getImage();
+
+  private boolean isMainScreen = false;
+
+  private Image titlImage = new ImageIcon(Main.class.getResource("../images/title_img.png")).getImage();
 
   public DynamicBeat() {
     setUndecorated(true);
@@ -78,13 +82,14 @@ public class DynamicBeat extends JFrame {
       @Override
       public void mousePressed(MouseEvent e){
         startButton.setVisible(false);
-        background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+        background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+        isMainScreen = true;
       }
     });
     add(startButton);
 
     //Setting exit Button
-    exitButton.setBounds(1200, 50, 30, 30);
+    exitButton.setBounds(1250, 30, 30, 30);
     exitButton.setBorderPainted(false);
     exitButton.setContentAreaFilled(false);
     exitButton.setFocusPainted(false);
@@ -111,13 +116,18 @@ public class DynamicBeat extends JFrame {
     // introMusic.start();
 
     
-    img = new JPanel() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(background, 0, 0, this);
+  img = new JPanel() {
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this);
+        if (isMainScreen) {
+            g.drawImage(selectedImage, 340, 100, null);
+            g.drawImage(titlImage, 640, 570, null);
         }
-    };
+        
+    }
+  };
     img.setLayout(null);
     img.setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
     add(img);
