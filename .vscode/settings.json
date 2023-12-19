@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/kimsungsik/Desktop/jar/JLayer1.0.1/jl1.0.1.jar"
+    ]
+}

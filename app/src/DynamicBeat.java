@@ -31,6 +31,9 @@ public class DynamicBeat extends JFrame{
         //Resizing to original image
         introBackground = originalImage.getScaledInstance(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT, Image.SCALE_SMOOTH);
 
+        //IntroBGM paly
+        Music introMusic = new Music("introBGM.mp3", true);
+        introMusic.start();
     }
     
 
