@@ -162,7 +162,7 @@ public class DynamicBeat extends JFrame {
 
       @Override
       public void mousePressed(MouseEvent e) {
-        gameStart(nowSelected, "Hard");
+        gameStart(nowSelected, "Easy");
       }
     });
     add(easyButton);
@@ -188,7 +188,7 @@ public class DynamicBeat extends JFrame {
 
       @Override
       public void mousePressed(MouseEvent e) {
-        gameStart(nowSelected, "Easy");
+        gameStart(nowSelected, "Hard");
       }
     });
     add(hardButton);

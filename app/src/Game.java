@@ -4,12 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
 public class Game extends Thread {
-
-    private Image noteBasicImage = new ImageIcon(Main.class.getResource("../images/noteBasic.png")).getImage();
     private Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../images/noteRouteLine.png")).getImage();
     private Image judgementLineImage = new ImageIcon(Main.class.getResource("../images/judgementLine.png")).getImage();
     private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
@@ -30,12 +29,15 @@ public class Game extends Thread {
     private String musicTitle;
     private Music gameMusic;
 
+    ArrayList<Note> noteList = new ArrayList<>();
+
     public Game(String titleName, String difficulty, String musicTitle){
         this.titleName = titleName;
         this.difficulty = difficulty;
         this.musicTitle = musicTitle;
         gameMusic = new Music(this.musicTitle, false);
         gameMusic.start();
+        dropNotes(titleName);
     }
     
     public void screenDraw(Graphics g) {
@@ -55,19 +57,14 @@ public class Game extends Thread {
         g.drawImage(noteRouteLineImage, 844, 30, null);
         g.drawImage(noteRouteLineImage, 948, 30, null);
         g.drawImage(noteRouteLineImage, 1052, 30, null);
-        
-
         g.drawImage(gameInfoImage, -5, 660, null);
         g.drawImage(judgementLineImage, 0, 580, null);
-        // draw note
-        g.drawImage(noteBasicImage, 228, 120, null);
-        g.drawImage(noteBasicImage, 332, 580, null);
-        g.drawImage(noteBasicImage, 436, 500, null);
-        g.drawImage(noteBasicImage, 540, 340, null);
-        g.drawImage(noteBasicImage, 640, 340, null);
-        g.drawImage(noteBasicImage, 744, 325, null);
-        g.drawImage(noteBasicImage, 848, 305, null);
-        g.drawImage(noteBasicImage, 952, 305, null);
+
+        // show notes
+        for(Note note : noteList){
+            note.sereenDraw(g);
+        }
+
         // draw game infomation
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 30));
@@ -141,5 +138,11 @@ public class Game extends Thread {
     public void close(){
         gameMusic.close();
         this.interrupt();
+    }
+    
+    public void dropNotes(String titleName){
+        Note note = new Note(228, "short");
+        note.start();
+        noteList.add(note);
     }
 }
