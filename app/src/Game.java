@@ -36,8 +36,6 @@ public class Game extends Thread {
         this.difficulty = difficulty;
         this.musicTitle = musicTitle;
         gameMusic = new Music(this.musicTitle, false);
-        gameMusic.start();
-        dropNotes(titleName);
     }
     
     public void screenDraw(Graphics g) {
@@ -132,7 +130,7 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-
+        dropNotes();
     }
 
     public void close(){
@@ -140,9 +138,32 @@ public class Game extends Thread {
         this.interrupt();
     }
     
-    public void dropNotes(String titleName){
-        Note note = new Note(228, "short");
-        note.start();
-        noteList.add(note);
+    public void dropNotes(){
+        Beat[] beats = null;
+        if(titleName.equals("game1")){
+            int startTime = 1000 - Main.REACH_TIME * 1000;
+            beats = new Beat[]{
+                new Beat(startTime,"Space"),
+            };
+        }
+        int i = 0;
+        gameMusic.start();
+        while (i < beats.length && !isInterrupted()) {
+            boolean dropped = false;
+            if (beats[i].getTime() <= gameMusic.getTime()) {
+                Note note = new Note(beats[i].getNoteName());
+                note.start();
+                noteList.add(note);
+                i++;
+                dropped = true;
+            }
+            if(!dropped){
+                try{
+                    Thread.sleep(5);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

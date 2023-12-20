@@ -52,6 +52,10 @@ public class DynamicBeat extends JFrame {
   public static Game game;
 
   public DynamicBeat() {
+    // Add Game Track
+    trackList.add(
+        new Track("title_img.png", "game1_background.png", "game1_start_img.png", "game1_selected.mp3", "game1.mp3", "game1"));
+
     setUndecorated(true);
 
     setTitle("Dynamic Beat");
@@ -65,10 +69,7 @@ public class DynamicBeat extends JFrame {
     // IntroBGM play
     introMusic.start();
 
-    // Add Game Track
-    trackList.add(
-        new Track("title_img.png", "game1_background.png", "game1_start_img.png", "game1_selected.mp3", "game1.mp3", "game1"));
-
+    
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBackground(new Color(0, 0, 0, 0));
     setLayout(null);
@@ -232,7 +233,11 @@ public class DynamicBeat extends JFrame {
           game.screenDraw(g);
           img.repaint();
         }
-
+        try {
+          Thread.sleep(5);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     };
     img.setLayout(null);
@@ -264,9 +269,10 @@ public class DynamicBeat extends JFrame {
       img.repaint();
       backButton.setVisible(true);
       isGameScreen = true;
+      game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
+      game.start();
       setFocusable(true);
       requestFocus();
-      game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
     }
   }
 
