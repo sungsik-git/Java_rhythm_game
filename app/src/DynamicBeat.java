@@ -29,6 +29,9 @@ public class DynamicBeat extends JFrame {
   private ImageIcon hardButtonImage = new ImageIcon(Main.class.getResource("../images/hardButton.png"));
   private ImageIcon backButtonImage = new ImageIcon(Main.class.getResource("../images/backButton.png"));
 
+  private Image gameInfoImage = new ImageIcon(Main.class.getResource("../images/gameInfo.png")).getImage();
+
+
   // Set Button on JButton
   private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png")));
   private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
@@ -46,6 +49,9 @@ public class DynamicBeat extends JFrame {
   private Image titleImage;
   private Music selectedMusic;
   private int nowSelected = 0;
+
+  //check either GameScreen or Not
+  private boolean isGameScreen = false;
 
   public DynamicBeat() {
     setUndecorated(true);
@@ -210,6 +216,9 @@ public class DynamicBeat extends JFrame {
             g.drawImage(selectedImage, 320, 120, null);
             g.drawImage(titleImage, 700, 560, null);
         }
+        if ( isGameScreen ){
+          g.drawImage(gameInfoImage, 0, 660, null);
+        }
         
     }
   };
@@ -238,6 +247,7 @@ public class DynamicBeat extends JFrame {
       background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
       img.repaint();
       backButton.setVisible(true);
+      isGameScreen = true;
     }
   }
 
@@ -249,11 +259,13 @@ public class DynamicBeat extends JFrame {
     backButton.setVisible(false);
     selectTrack(nowSelected);
     img.repaint();
+    isGameScreen = false;
   }
 
   public void enterMain(){
     startButton.setVisible(false);
     background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+    img.repaint();
     introMusic.close();
     selectTrack(0);
     easyButton.setVisible(true);
