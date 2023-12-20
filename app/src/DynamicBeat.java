@@ -19,11 +19,21 @@ public class DynamicBeat extends JFrame {
   private JPanel img;
 
   private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menubar1280.jpg")));
+
+  
+  // Get image property
+  private Image background = new ImageIcon(Main.class.getResource("../images/background(title).png")).getImage();
+
+  // Get image icon property
+  private ImageIcon easyButtonImage = new ImageIcon(Main.class.getResource("../images/easyButton.png"));
+  private ImageIcon hardButtonImage = new ImageIcon(Main.class.getResource("../images/hardButton.png"));
+
+  // Set Button on JButton
   private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png")));
   private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
-  
-  // Get background image
-  private Image background = new ImageIcon(Main.class.getResource("../images/background(title).png")).getImage();
+  private JButton easyButton = new JButton(easyButtonImage);
+  private JButton hardButton = new JButton(hardButtonImage);
+
   //mouse position 
   private int mouseX, mouseY;
   private boolean isMainScreen = false;
@@ -92,6 +102,8 @@ public class DynamicBeat extends JFrame {
         startButton.setVisible(false);
         introMusic.close();
         selectTrack(0);
+        easyButton.setVisible(true);
+        hardButton.setVisible(true);
         background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
         isMainScreen = true;
       }
@@ -121,7 +133,53 @@ public class DynamicBeat extends JFrame {
     });
     add(exitButton);
 
-  
+    //Setting easy button
+    easyButton.setBounds(355, 450, 250, 67);
+    easyButton.setVisible(false);
+    easyButton.setBorderPainted(false);
+    easyButton.setContentAreaFilled(false);
+    easyButton.setFocusPainted(false);
+    easyButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        super.mouseEntered(e);
+        easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      }
+      @Override
+      public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        easyButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      }
+      @Override
+      public void mousePressed(MouseEvent e){
+          //easy select event
+      }
+    });
+    add(easyButton);
+
+    //Setting hard button
+    hardButton.setBounds(635, 450, 250, 67);
+    hardButton.setVisible(false);
+    hardButton.setBorderPainted(false);
+    hardButton.setContentAreaFilled(false);
+    hardButton.setFocusPainted(false);
+    hardButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        super.mouseEntered(e);
+        hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      }
+      @Override
+      public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        hardButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      }
+      @Override
+      public void mousePressed(MouseEvent e){
+        //hard select Event
+      }
+    });
+    add(hardButton);
 
   img = new JPanel() {
     @Override
