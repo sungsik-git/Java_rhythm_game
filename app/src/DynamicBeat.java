@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class DynamicBeat extends JFrame {
   private JPanel img;
-
+  private Music introMusic = new Music("introBGM.mp3", true);
   private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menubar1280.jpg")));
 
   
@@ -27,12 +27,14 @@ public class DynamicBeat extends JFrame {
   // Get image icon property
   private ImageIcon easyButtonImage = new ImageIcon(Main.class.getResource("../images/easyButton.png"));
   private ImageIcon hardButtonImage = new ImageIcon(Main.class.getResource("../images/hardButton.png"));
+  private ImageIcon backButtonImage = new ImageIcon(Main.class.getResource("../images/backButton.png"));
 
   // Set Button on JButton
   private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png")));
   private JButton startButton = new JButton(new ImageIcon(Main.class.getResource("../images/button_img.png")));
   private JButton easyButton = new JButton(easyButtonImage);
   private JButton hardButton = new JButton(hardButtonImage);
+  private JButton backButton = new JButton(backButtonImage);
 
   //mouse position 
   private int mouseX, mouseY;
@@ -53,7 +55,7 @@ public class DynamicBeat extends JFrame {
     setResizable(false);
     setLocationRelativeTo(null);
     // IntroBGM play
-    Music introMusic = new Music("introBGM.mp3", true);
+    
     introMusic.start();
 
     // Add Game Track
@@ -99,13 +101,7 @@ public class DynamicBeat extends JFrame {
       }
       @Override
       public void mousePressed(MouseEvent e){
-        startButton.setVisible(false);
-        introMusic.close();
-        selectTrack(0);
-        easyButton.setVisible(true);
-        hardButton.setVisible(true);
-        background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-        isMainScreen = true;
+        enterMain();
       }
     });
     add(startButton);
@@ -152,7 +148,7 @@ public class DynamicBeat extends JFrame {
       }
       @Override
       public void mousePressed(MouseEvent e){
-          //easy select event
+          gameStart(nowSelected, "hard");
       }
     });
     add(easyButton);
@@ -176,10 +172,34 @@ public class DynamicBeat extends JFrame {
       }
       @Override
       public void mousePressed(MouseEvent e){
-        //hard select Event
+        gameStart(nowSelected, "easy");
       }
     });
     add(hardButton);
+
+    //Setting back button
+    backButton.setBounds(20, 50, 80, 80);
+    backButton.setVisible(false);
+    backButton.setBorderPainted(false);
+    backButton.setContentAreaFilled(false);
+    backButton.setFocusPainted(false);
+    backButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        super.mouseEntered(e);
+        hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      }
+      @Override
+      public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        hardButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+      }
+      @Override
+      public void mousePressed(MouseEvent e){
+        backMain();
+      }
+    });
+    add(backButton);
 
   img = new JPanel() {
     @Override
@@ -196,7 +216,6 @@ public class DynamicBeat extends JFrame {
     img.setLayout(null);
     img.setBounds(0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
     add(img);
-
     setVisible(true);
   }
 
@@ -208,6 +227,38 @@ public class DynamicBeat extends JFrame {
     selectedImage = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getStartImage())).getImage();
     selectedMusic = new Music(trackList.get(nowSelected).getStartMusic(),true);
     selectedMusic.start();
+  }
+
+  public void gameStart(int nowSelected, String difficulty){
+    if(selectedMusic != null){
+      selectedMusic.close();
+      isMainScreen = false;
+      hardButton.setVisible(false);
+      easyButton.setVisible(false);
+      background = new ImageIcon(Main.class.getResource("../images/" + trackList.get(nowSelected).getGameImage())).getImage();
+      img.repaint();
+      backButton.setVisible(true);
+    }
+  }
+
+  public void backMain(){
+    isMainScreen = true;
+    easyButton.setVisible(true);
+    hardButton.setVisible(true);
+    background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+    backButton.setVisible(false);
+    selectTrack(nowSelected);
+    img.repaint();
+  }
+
+  public void enterMain(){
+    startButton.setVisible(false);
+    background = new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+    introMusic.close();
+    selectTrack(0);
+    easyButton.setVisible(true);
+    hardButton.setVisible(true);
+    isMainScreen = true;
   }
 }
 
