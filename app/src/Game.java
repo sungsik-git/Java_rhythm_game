@@ -24,6 +24,19 @@ public class Game extends Thread {
     private Image noteRouteJImage = noteRouteImage;
     private Image noteRouteKImage = noteRouteImage;
     private Image noteRouteLImage = noteRouteImage;
+
+    private String titleName;
+    private String difficulty;
+    private String musicTitle;
+    private Music gameMusic;
+
+    public Game(String titleName, String difficulty, String musicTitle){
+        this.titleName = titleName;
+        this.difficulty = difficulty;
+        this.musicTitle = musicTitle;
+        gameMusic = new Music(this.musicTitle, false);
+        gameMusic.start();
+    }
     
     public void screenDraw(Graphics g) {
         g.drawImage(noteRouteSImage, 228, 30, null);
@@ -58,8 +71,8 @@ public class Game extends Thread {
         // draw game infomation
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 30));
-        g.drawString("Sample Music", 20, 740 - g.getFontMetrics().getHeight());
-        g.drawString("Easy", 1190, 740 - g.getFontMetrics().getHeight());
+        g.drawString(titleName, 20, 702);
+        g.drawString(difficulty, 1190, 740 - g.getFontMetrics().getHeight());
         g.setFont(new Font("Elephant", Font.BOLD, 30));
         g.drawString("000000", 565, 740 - g.getFontMetrics().getHeight());
         // draw keypad infomation
@@ -123,5 +136,10 @@ public class Game extends Thread {
     @Override
     public void run() {
 
+    }
+
+    public void close(){
+        gameMusic.close();
+        this.interrupt();
     }
 }

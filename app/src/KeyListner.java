@@ -10,7 +10,6 @@ public class KeyListner extends KeyAdapter{
             return;
         }
         if(e.getKeyCode() == KeyEvent.VK_S){
-            System.out.println("pressS");
             DynamicBeat.game.pressS();
         }else if(e.getKeyCode() == KeyEvent.VK_D){
             DynamicBeat.game.pressD();

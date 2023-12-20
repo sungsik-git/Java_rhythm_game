@@ -49,7 +49,7 @@ public class DynamicBeat extends JFrame {
   // check either GameScreen or Not
   private boolean isGameScreen = false;
 
-  public static Game game = new Game();
+  public static Game game;
 
   public DynamicBeat() {
     setUndecorated(true);
@@ -67,7 +67,7 @@ public class DynamicBeat extends JFrame {
 
     // Add Game Track
     trackList.add(
-        new Track("title_img.png", "game1_background.png", "game1_start_img.png", "game1_selected.mp3", "game1.mp3"));
+        new Track("title_img.png", "game1_background.png", "game1_start_img.png", "game1_selected.mp3", "game1.mp3", "game1"));
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBackground(new Color(0, 0, 0, 0));
@@ -162,7 +162,7 @@ public class DynamicBeat extends JFrame {
 
       @Override
       public void mousePressed(MouseEvent e) {
-        gameStart(nowSelected, "hard");
+        gameStart(nowSelected, "Hard");
       }
     });
     add(easyButton);
@@ -188,7 +188,7 @@ public class DynamicBeat extends JFrame {
 
       @Override
       public void mousePressed(MouseEvent e) {
-        gameStart(nowSelected, "easy");
+        gameStart(nowSelected, "Easy");
       }
     });
     add(hardButton);
@@ -266,6 +266,7 @@ public class DynamicBeat extends JFrame {
       isGameScreen = true;
       setFocusable(true);
       requestFocus();
+      game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
     }
   }
 
@@ -278,6 +279,7 @@ public class DynamicBeat extends JFrame {
     selectTrack(nowSelected);
     img.repaint();
     isGameScreen = false;
+    game.close();
   }
 
   public void enterMain() {
