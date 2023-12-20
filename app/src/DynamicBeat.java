@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 
 public class DynamicBeat extends JFrame {
   private JPanel img;
-  Game game = new Game();
   private Music introMusic = new Music("introBGM.mp3", true);
   private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menubar1280.jpg")));
 
@@ -50,6 +49,8 @@ public class DynamicBeat extends JFrame {
   // check either GameScreen or Not
   private boolean isGameScreen = false;
 
+  public static Game game = new Game();
+
   public DynamicBeat() {
     setUndecorated(true);
 
@@ -57,8 +58,11 @@ public class DynamicBeat extends JFrame {
     setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
     setResizable(false);
     setLocationRelativeTo(null);
-    // IntroBGM play
 
+    // Key listener
+    addKeyListener(new KeyListner());
+    
+    // IntroBGM play
     introMusic.start();
 
     // Add Game Track
@@ -226,6 +230,7 @@ public class DynamicBeat extends JFrame {
         }
         if (isGameScreen) {
           game.screenDraw(g);
+          img.repaint();
         }
 
       }
@@ -259,6 +264,8 @@ public class DynamicBeat extends JFrame {
       img.repaint();
       backButton.setVisible(true);
       isGameScreen = true;
+      setFocusable(true);
+      requestFocus();
     }
   }
 
