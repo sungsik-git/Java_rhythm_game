@@ -229,9 +229,9 @@ public class DynamicBeat extends JFrame {
           g.drawImage(selectedImage, 320, 120, null);
           g.drawImage(titleImage, 700, 560, null);
         }
-        if (isGameScreen) {
-          game.screenDraw(g);
+        if (isGameScreen && game != null) {
           img.repaint();
+          game.screenDraw(g);
         }
         try {
           Thread.sleep(5);
